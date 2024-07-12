@@ -1,0 +1,17 @@
+.content{
+  position: relative;
+  color: #fff;
+  background-color: #000;
+  width: 100%;
+  height: 100vh;
+}
+.bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../assets/img/bg.jpg')no-repeat center center;
+  background-size: cover;
+  filter: blur(20px);
+}
