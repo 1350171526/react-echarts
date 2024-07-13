@@ -77,7 +77,7 @@ function Right(){
         <datav.Charts option={circleChartOption} />  
       </datav.BorderBox12>
       <datav.BorderBox13 style={{width: '100%',height: '225px'}}>
-        <div style={{textAlign: 'center'}}>单位：摄氏度(℃)</div>
+        <div style={{textAlign: 'center',fontWeight: 'bolder'}}>单位：摄氏度(℃)</div>
         <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)'}}>
           <datav.ActiveRingChart config={dynamicCircleChartOption} style={{ width: '300px', height: '300px'}} />
         </div>
