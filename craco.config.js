@@ -19,5 +19,9 @@ module.exports = {
         },
       },
     },
+    client: {
+      progress: true,
+      overlay: false,
+  },
   },
 }
