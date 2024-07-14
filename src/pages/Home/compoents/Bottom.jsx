@@ -3,14 +3,20 @@ import * as echarts from 'echarts';
 import { useEffect } from 'react';
 function Bottom(){
   const averageTemperatureOption = {
-    data: [66],
-    formatter: '{value}℃'
+    data: [60],
+    formatter: `{value}℃`,
+    waveHeight: 30,
+    colors: ['#DD5145'],
+    waveOpacity: 0.5
   }
   
   const averageAQIOption = {
-    data: [66, 45],
+    data: [45],
     shape: 'roundRect',
-    formatter: '{value}'
+    formatter: '{value}',
+    waveHeight: 30,
+    colors: ['#DD5145'],
+    waveOpacity: 0.5
   }
   useEffect(()=>{
     const lineChart = document.getElementById('lineChart');

@@ -17,7 +17,7 @@ function Right(){
             type: 'gauge',
             min: -30,
             max: 50,
-            data: [ { name: 'itemA', value: 30 } ],
+            data: [ { name: 'itemA', value: 30, gradient: ['#37A1DA', '#37A2DA', '#FFDB5C', '#DD5145']}],
             center: ['50%', '55%'],
             axisLabel: {
               formatter: '{value}℃',
@@ -64,6 +64,7 @@ function Right(){
             value: 80
           }
         ],
+        color: ['#DD5145','#FFDB5C','#9FE6B8','#37A2DA','#32C5E9'],
         showOriginValue: true
       })
     }
