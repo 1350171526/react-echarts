@@ -5,7 +5,22 @@ import MainRight from './compoents/MainRight'
 import Bottom from './compoents/Bottom'
 import * as datav from '@jiaminghi/data-view-react'
 import './style.scss'
+import { useEffect, useState } from "react"
+import { getAllWeatherApi, getBaseWeatherApi } from "@/apis/getWeather"
+
 function Home(){
+  const [baseWeather,setBaseWeather] = useState([])
+  const [allWeather,setAllWeather] = useState([])
+  const getWeather = async () => {
+    const getBaseWeather = getBaseWeatherApi()
+    const getAllWeather = getAllWeatherApi()
+    const res = await Promise.all([getBaseWeather,getAllWeather])
+    setBaseWeather(res[0].data)
+    setAllWeather(res[1].data)
+  }
+  useEffect(()=>{
+    getWeather()
+  },[])
   return <>
     <div className="content">
       <div className="bg"></div>
