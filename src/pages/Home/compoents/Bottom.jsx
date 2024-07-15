@@ -2,33 +2,36 @@ import * as datav from '@jiaminghi/data-view-react'
 import * as echarts from 'echarts';
 import { useEffect } from 'react';
 import { getAllWeatherApi } from "@/apis/getWeather"
+import {getColorByTemperature, getColorByHumidity} from '@/utils/getColor'
 function Bottom({baseWeather}){
   // 计算平均温度
   const sumTemperature = baseWeather.reduce((total, num) => total + parseInt(num.lives[0].temperature), 0);
-  const averageTemperature = (sumTemperature / baseWeather.length).toFixed(0);
+  const averageTemperature = parseInt((sumTemperature / baseWeather.length).toFixed(0));
+  const temperatureColor = getColorByTemperature(averageTemperature)
   const averageTemperatureOption = {
-    data: [averageTemperature],
-    formatter: `{value}℃`,
+    data: [averageTemperature+30],
+    shape: 'roundRect',
+    formatter: `${averageTemperature}℃`,
     waveHeight: 30,
-    colors: ['#DD5145'],
+    colors: [temperatureColor],
     waveOpacity: 0.5
   }
   // 计算平均湿度
   const sumHumidity = baseWeather.reduce((total, num) => total + parseInt(num.lives[0].humidity), 0);
   const averageHumidity = (sumHumidity / baseWeather.length).toFixed(0);
+  const humidityColor = getColorByHumidity(averageHumidity)
   const averageAQIOption = {
     data: [averageHumidity],
     shape: 'roundRect',
     formatter: '{value}%',
     waveHeight: 30,
-    colors: ['#DD5145'],
+    colors: [humidityColor],
     waveOpacity: 0.5
   }
   // 创建图表
   const createChart = async () => {
     // 获取图表数据
     const getAllWeather = await getAllWeatherApi()
-    console.log(getAllWeather);
     const provincialCapitalData = {category:[],Highest:[],Lowest:[]}
     getAllWeather.data[0].forecasts[0].casts.forEach((item)=>{
       switch (item.week) {
@@ -60,7 +63,6 @@ function Bottom({baseWeather}){
       provincialCapitalData.Highest.push(parseInt(item.daytemp))
       provincialCapitalData.Lowest.push(parseInt(item.nighttemp))
     })
-    console.log(provincialCapitalData);
     const lineChart = document.getElementById('lineChart');
     const createLineChart = echarts.init(lineChart)
     const lineChartOption = {
