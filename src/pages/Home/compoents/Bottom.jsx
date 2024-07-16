@@ -119,7 +119,7 @@ function Bottom({baseWeather}){
         <datav.BorderBox7 style={{flex: '0 1 50%',height: '175px'}}>
           <datav.Loading>Loading...</datav.Loading>
         </datav.BorderBox7>
-        <datav.BorderBox8 reverse="{true}" style={{flex: '0 1 25%',height: '175px'}}>
+        <datav.BorderBox8 reverse={true} style={{flex: '0 1 25%',height: '175px'}}>
           <datav.Loading>Loading...</datav.Loading>
         </datav.BorderBox8>
       </div>
@@ -136,7 +136,7 @@ function Bottom({baseWeather}){
         <datav.BorderBox7 style={{flex: '0 1 50%',height: '175px'}}>
           <div id='lineChart' style={{width: '100%',height: '150%',position: 'absolute',top: '-25%'}}></div>
         </datav.BorderBox7>
-        <datav.BorderBox8 reverse="{true}" style={{flex: '0 1 25%',height: '175px'}}>
+        <datav.BorderBox8 reverse={true} style={{flex: '0 1 25%',height: '175px'}}>
           <div style={{position:'absolute',top:'15px',left:'50%',transform:'translateX(-50%)',fontWeight:'bolder'}}>
             列表城市平均湿度
           </div>
