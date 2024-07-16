@@ -27,7 +27,6 @@ function Home(){
     },2100)
     let timer2 = setTimeout(()=>{
       setBgvideoShow(false)
-      console.log(bgvideoShow);
       clearTimeout(timer2)
     },5500)
   },[])
