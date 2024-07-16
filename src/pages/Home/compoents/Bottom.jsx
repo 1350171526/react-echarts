@@ -1,9 +1,10 @@
 import * as datav from '@jiaminghi/data-view-react'
 import * as echarts from 'echarts';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllWeatherApi } from "@/apis/getWeather"
 import {getColorByTemperature, getColorByHumidity} from '@/utils/getColor'
 function Bottom({baseWeather}){
+  const [isLoading,setLoading] = useState(false)
   // 计算平均温度
   const sumTemperature = baseWeather.reduce((total, num) => total + parseInt(num.lives[0].temperature), 0);
   const averageTemperature = parseInt((sumTemperature / baseWeather.length).toFixed(0));
@@ -29,9 +30,10 @@ function Bottom({baseWeather}){
     waveOpacity: 0.5
   }
   // 创建图表
+  let getAllWeather;
   const createChart = async () => {
     // 获取图表数据
-    const getAllWeather = await getAllWeatherApi()
+    getAllWeather = await getAllWeatherApi()
     const provincialCapitalData = {category:[],Highest:[],Lowest:[]}
     getAllWeather.data[0].forecasts[0].casts.forEach((item)=>{
       switch (item.week) {
@@ -101,10 +103,29 @@ function Bottom({baseWeather}){
     lineChartOption && createLineChart.setOption(lineChartOption)
   }
   useEffect(()=>{
-    createChart()
+    if(!getAllWeather){
+      createChart()
+    }
+    if(baseWeather){
+      setLoading(true)
+    }
   },[])
-  
-  return <>
+  if(!isLoading){
+    return <>
+      <div style={{display: 'flex'}}>
+        <datav.BorderBox8 style={{flex: '0 1 25%',height: '175px'}}>
+          <datav.Loading>Loading...</datav.Loading>
+        </datav.BorderBox8>
+        <datav.BorderBox7 style={{flex: '0 1 50%',height: '175px'}}>
+          <datav.Loading>Loading...</datav.Loading>
+        </datav.BorderBox7>
+        <datav.BorderBox8 reverse="{true}" style={{flex: '0 1 25%',height: '175px'}}>
+          <datav.Loading>Loading...</datav.Loading>
+        </datav.BorderBox8>
+      </div>
+    </>
+  }else{
+    return <>
       <div style={{display: 'flex'}}>
         <datav.BorderBox8 style={{flex: '0 1 25%',height: '175px'}}>
           <div style={{position:'absolute',top:'15px',left:'50%',transform:'translateX(-50%)',fontWeight:'bolder'}}>
@@ -122,7 +143,10 @@ function Bottom({baseWeather}){
           <datav.WaterLevelPond config={averageAQIOption} style={{width: '100%', height: '175px'}} />
         </datav.BorderBox8>
       </div>
-  </>
+    </>
+  }
+  
+  
 }
 
 export default Bottom

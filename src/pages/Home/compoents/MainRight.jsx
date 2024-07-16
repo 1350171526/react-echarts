@@ -2,6 +2,7 @@ import * as datav from '@jiaminghi/data-view-react'
 import { useEffect, useState } from 'react'
 import { getOneWeatherApi } from '@/apis/getWeather'
 function Right({baseWeather}){
+    const [isLoading,setLoading] = useState(false)
     // 获取省会城市温度
     const [circleChartValue,setCircleChartValue] = useState(0)
     const getOneWeather = async () => {
@@ -61,26 +62,31 @@ function Right({baseWeather}){
     }
   // 获取实时省会城市温度
   useEffect(()=>{
-    getOneWeather()
-
-    //客户端与服务端连接
-    const ws = new WebSocket("ws://192.168.1.9:3002");
-    //成功回调
-    ws.onopen = () => {
-      console.log("Websocket连接成功");
+    !circleChartValue && getOneWeather()
+    if(baseWeather && circleChartValue){
+      setLoading(true)
     }
-    //错误回调
-    ws.onerror =function(err){
-      console.log("Websocket连接发生错误")
-    };
-    //接收消息
-    ws.onmessage = (msg) =>{
-      if(+JSON.parse(msg.data).temperature !== circleChartValue){
-        setCircleChartValue(+JSON.parse(msg.data).temperature)
+    //客户端与服务端连接
+    if(!circleChartValue){
+      const ws = new WebSocket("ws://192.168.1.9:3002");
+      //成功回调
+      ws.onopen = () => {
+        console.log("Websocket连接成功");
+      }
+      //错误回调
+      ws.onerror =function(err){
+        console.log("Websocket连接发生错误")
+      };
+      //接收消息
+      ws.onmessage = (msg) =>{
+        if(+JSON.parse(msg.data).temperature !== circleChartValue){
+          setCircleChartValue(+JSON.parse(msg.data).temperature)
+        }
       }
     }
-  },[])
-  return <>
+  },[circleChartValue,baseWeather])
+  if(isLoading){
+    return <>
     <div>
       <datav.BorderBox12 style={{width: '100%',height: '225px'}}>
         <datav.Charts option={circleChartOption} />  
@@ -92,7 +98,20 @@ function Right({baseWeather}){
         </div>
       </datav.BorderBox13>
     </div>
-  </>
+    </>
+  }else{
+    return <>
+    <div>
+      <datav.BorderBox12 style={{width: '100%',height: '225px'}}>
+        <datav.Loading>Loading...</datav.Loading>
+      </datav.BorderBox12>
+      <datav.BorderBox13 style={{width: '100%',height: '225px'}}>
+        <datav.Loading>Loading...</datav.Loading>
+      </datav.BorderBox13>
+    </div>
+    </>
+  }
+  
 }
 
 export default Right
