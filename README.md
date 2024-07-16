@@ -1,6 +1,13 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## 特别注意
+由于接口有发送次数限制，服务端文件router/index.js和websocket中的高德天气Api的key，请大家去高德开放平台的控制台创建并替换成自己的key（web服务）
+## pay attention
+Due to the number of sending times,The KEY of the Gaode Weather API in the service side file Router/Index.js and Websocket, please go to the console of the Gaode Open Platform to create and replace it with your own key (Web service)
+
+
 ## 注意
 此项目使用的前端、后端、websocket端口号分别为3000、3001、3002，如果端口号被其他服务占用，请结束服务或者修改此项目端口号。
 ## Notice
