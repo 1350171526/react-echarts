@@ -1,6 +1,13 @@
 import * as datav from '@jiaminghi/data-view-react'
-function Right({baseWeather={baseWeather}}){
+import { useEffect, useState } from 'react'
+import { getOneWeatherApi } from '@/apis/getWeather'
+function Right({baseWeather}){
     // 获取省会城市温度
+    const [circleChartValue,setCircleChartValue] = useState(0)
+    const getOneWeather = async () => {
+      const res = await getOneWeatherApi()
+      setCircleChartValue(+res.data.temperature)
+    }
     const circleChartOption = {
       title: {
         text: '省会城市温度表',
@@ -13,7 +20,7 @@ function Right({baseWeather={baseWeather}}){
           type: 'gauge',
           min: -30,
           max: 50,
-          data: [ { name: 'itemA', value: 30, gradient: ['#37A1DA', '#37A2DA', '#FFDB5C', '#DD5145']}],
+          data: [ { name: 'itemA', value: circleChartValue, gradient: ['#37A1DA', '#37A2DA', '#FFDB5C', '#DD5145']}],
           center: ['50%', '55%'],
           axisLabel: {
             formatter: '{value}℃',
@@ -52,7 +59,27 @@ function Right({baseWeather={baseWeather}}){
       color: ['#DD5145','#FFDB5C','#9FE6B8','#37A2DA','#32C5E9'],
       showOriginValue: true
     }
+  // 获取实时省会城市温度
+  useEffect(()=>{
+    getOneWeather()
 
+    //客户端与服务端连接
+    const ws = new WebSocket("ws://192.168.1.9:3002");
+    //成功回调
+    ws.onopen = () => {
+      console.log("Websocket连接成功");
+    }
+    //错误回调
+    ws.onerror =function(err){
+      console.log("Websocket连接发生错误")
+    };
+    //接收消息
+    ws.onmessage = (msg) =>{
+      if(+JSON.parse(msg.data).temperature !== circleChartValue){
+        setCircleChartValue(+JSON.parse(msg.data).temperature)
+      }
+    }
+  },[])
   return <>
     <div>
       <datav.BorderBox12 style={{width: '100%',height: '225px'}}>

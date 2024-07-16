@@ -13,3 +13,10 @@ export const getAllWeatherApi = () => {
     method:'GET'
   })
 }
+
+export const getOneWeatherApi = () => {
+  return api({
+    url:'/oneBaseWeather',
+    method:'GET'
+  })
+}
