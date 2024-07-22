@@ -68,7 +68,7 @@ function Right({baseWeather}){
     }
     //客户端与服务端连接
     if(!circleChartValue){
-      const ws = new WebSocket("ws://192.168.1.9:3002");
+      const ws = new WebSocket("ws://localhost:3002");
       //成功回调
       ws.onopen = () => {
         console.log("Websocket连接成功");
