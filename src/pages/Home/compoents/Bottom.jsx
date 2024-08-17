@@ -134,7 +134,7 @@ function Bottom({baseWeather}){
           <datav.WaterLevelPond config={averageTemperatureOption} style={{width: '100%', height: '175px'}} />
         </datav.BorderBox8>
         <datav.BorderBox7 style={{flex: '0 1 50%',height: '175px'}}>
-          <div id='lineChart' style={{width: '100%',height: '150%',position: 'absolute',top: '-25%'}}></div>
+          <div id='lineChart' style={{width: '100%',height: '120%',position: 'absolute',top: '0%'}}></div>
         </datav.BorderBox7>
         <datav.BorderBox8 reverse={true} style={{flex: '0 1 25%',height: '175px'}}>
           <div style={{position:'absolute',top:'15px',left:'50%',transform:'translateX(-50%)',fontWeight:'bolder'}}>
