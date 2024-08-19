@@ -1,9 +1,11 @@
 import * as datav from '@jiaminghi/data-view-react'
 import * as echarts from 'echarts';
 import china from  '@/assets/map/china.json'
-import { getMap } from '@/utils/getMap';
+import { getMap,chinaCityCodes } from '@/utils/getMap';
 import { useEffect, useRef, useState } from 'react';
-function Main(){
+import { message } from 'antd';
+
+function Main({updateCode,updataMainCityCode}){
   // const flyLineChartOption = {
   //   points: [
   //     {
@@ -170,6 +172,8 @@ function Main(){
   const isClick = useRef(true)
   const initMap = () => {
     setMap(china)
+    updataMainCityCode([110000])
+    updateCode(chinaCityCodes)
     isClick.current = true
   }
   useEffect(()=>{
@@ -222,19 +226,29 @@ function Main(){
     chart.on('click', function(params) {
       if (params.componentType === 'geo') {
         if(!params.name || !isClick.current) return
+        if(params.name === '台湾') {
+          message.info('暂无台湾省天气信息');
+          return
+        }
         const getCode = china.features.find((item)=> item.properties.name === params.name)
         isClick.current = false
-        setMap(getMap(getCode.id))
+        const res = getMap(getCode.id)
+        setMap(res)
+        let codeArr = [];
+        res.features.forEach((item)=>{
+          codeArr.push(item.properties.adcode)
+        })
+        updateCode(codeArr)
+        updataMainCityCode([res.features[0].properties.adcode])
       }
     });
   },[map])
   return <>
     <div style={{width: '100%',height: '450px'}}>
       <datav.BorderBox10>
-        <div onClick={initMap} style={{position: 'absolute', left: 0, top: 0, zIndex: 9999999,cursor:'pointer'}}>返回</div>
+        {isClick.current ? null : <div onClick={initMap} style={{position: 'absolute', left: '10px', top: '8px', zIndex: 9999999,cursor:'pointer'}}>返回</div>} 
         <div id='mapContainer' style={{width: '100%',height: '100%', display: 'flex', justifyContent: 'center'}}>
           {/* <datav.FlylineChartEnhanced  config={flyLineChartOption} style={{width: '100%', height: '100%'}} /> */}
-
         </div>
       </datav.BorderBox10>
     </div>

@@ -1,17 +1,18 @@
 import * as datav from '@jiaminghi/data-view-react'
 import { useEffect, useState } from 'react'
 import { getOneWeatherApi } from '@/apis/getWeather'
-function Right({baseWeather}){
-    const [isLoading,setLoading] = useState(false)
+function Right({baseWeather,mainCityCode,isloading,cityNamed}){
     // 获取省会城市温度
     const [circleChartValue,setCircleChartValue] = useState(0)
-    const getOneWeather = async () => {
-      const res = await getOneWeatherApi()
+    const [city,setCity] = useState(null)
+    const getOneWeather = async (mainCityCode) => {
+      const res = await getOneWeatherApi(mainCityCode)
       setCircleChartValue(+res.data.temperature)
+      setCity(res.data.city) 
     }
     const circleChartOption = {
       title: {
-        text: '省会城市温度表',
+        text: `${cityNamed}城市温度表(${city})`,
         style: {
           fill: '#fff'
         }
@@ -60,32 +61,30 @@ function Right({baseWeather}){
       color: ['#DD5145','#FFDB5C','#9FE6B8','#37A2DA','#32C5E9'],
       showOriginValue: true
     }
-  // 获取实时省会城市温度
+
   useEffect(()=>{
-    !circleChartValue && getOneWeather()
-    if(baseWeather && circleChartValue){
-      setLoading(true)
+    getOneWeather(mainCityCode)
+    const ws = new WebSocket("ws://localhost:3002");
+    //成功回调
+    ws.onopen = () => {
+      console.log("Websocket连接成功");
+      ws.send(mainCityCode)
     }
-    //客户端与服务端连接
-    if(!circleChartValue){
-      const ws = new WebSocket("ws://localhost:3002");
-      //成功回调
-      ws.onopen = () => {
-        console.log("Websocket连接成功");
-      }
-      //错误回调
-      ws.onerror =function(err){
-        console.log("Websocket连接发生错误")
-      };
-      //接收消息
-      ws.onmessage = (msg) =>{
-        if(+JSON.parse(msg.data).temperature !== circleChartValue){
-          setCircleChartValue(+JSON.parse(msg.data).temperature)
-        }
+    //错误回调
+    ws.onerror =function(err){
+      console.log("Websocket连接发生错误")
+    };
+    //接收消息
+    ws.onmessage = (msg) =>{
+      if(+JSON.parse(msg.data).temperature !== circleChartValue){
+        setCircleChartValue(+JSON.parse(msg.data).temperature)
       }
     }
-  },[circleChartValue,baseWeather])
-  if(isLoading){
+    return () => {
+      ws.close();
+    };
+  },[mainCityCode])
+  if(!isloading){
     return <>
     <div>
       <datav.BorderBox12 style={{width: '100%',height: '225px'}}>

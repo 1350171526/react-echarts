@@ -1,10 +1,9 @@
 import * as datav from '@jiaminghi/data-view-react'
 import * as echarts from 'echarts';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getAllWeatherApi } from "@/apis/getWeather"
 import {getColorByTemperature, getColorByHumidity} from '@/utils/getColor'
-function Bottom({baseWeather}){
-  const [isLoading,setLoading] = useState(false)
+function Bottom({baseWeather,mainCityCode,isloading,cityNamed}){
   // 计算平均温度
   const sumTemperature = baseWeather.reduce((total, num) => total + parseInt(num.lives[0].temperature), 0);
   const averageTemperature = parseInt((sumTemperature / baseWeather.length).toFixed(0));
@@ -33,7 +32,7 @@ function Bottom({baseWeather}){
   let getAllWeather;
   const createChart = async () => {
     // 获取图表数据
-    getAllWeather = await getAllWeatherApi()
+    getAllWeather = await getAllWeatherApi(mainCityCode)
     const provincialCapitalData = {category:[],Highest:[],Lowest:[]}
     getAllWeather.data[0].forecasts[0].casts.forEach((item)=>{
       switch (item.week) {
@@ -69,7 +68,7 @@ function Bottom({baseWeather}){
     const createLineChart = echarts.init(lineChart)
     const lineChartOption = {
       title: {
-        text: '省会城市四天内温度'
+        text: `${cityNamed}城市四天内温度(${getAllWeather.data[0].forecasts[0].city})`
       },
       tooltip: {
         trigger: 'axis'
@@ -103,14 +102,10 @@ function Bottom({baseWeather}){
     lineChartOption && createLineChart.setOption(lineChartOption)
   }
   useEffect(()=>{
-    if(!getAllWeather){
-      createChart()
-    }
-    if(baseWeather){
-      setLoading(true)
-    }
-  },[])
-  if(!isLoading){
+    !isloading && createChart()
+  },[isloading])
+
+  if(isloading){
     return <>
       <div style={{display: 'flex'}}>
         <datav.BorderBox8 style={{flex: '0 1 25%',height: '175px'}}>

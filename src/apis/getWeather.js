@@ -1,22 +1,25 @@
 import api from "@/utils/http";
 
-export const getBaseWeatherApi = () => {
+export const getBaseWeatherApi = (codeArr) => {
   return api({
     url:'baseWeather',
-    method:'GET'
+    method:'GET',
+    params: codeArr
   })
 }
 
-export const getAllWeatherApi = () => {
+export const getAllWeatherApi = (codeArr) => {
   return api({
     url:'/allWeather',
-    method:'GET'
+    method:'GET',
+    params: codeArr
   })
 }
 
-export const getOneWeatherApi = () => {
+export const getOneWeatherApi = (codeArr) => {
   return api({
     url:'/oneBaseWeather',
-    method:'GET'
+    method:'GET',
+    params: codeArr
   })
 }
