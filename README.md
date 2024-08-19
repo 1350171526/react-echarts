@@ -20,7 +20,7 @@ React + Express + AXIOS + WebSocket + DataV + Echarts
 
 ## 启动前
 如果想要运行该项目，请首先前往 https://github.com/1350171526/react-echarts-server 克隆node服务端到本地
-分别在两个文件的根目录下的终端执行 npm install,如果提示下载失败则执行 npm install --force
+分别在两个文件的根目录下的终端执行 npm install,如果提示下载失败则执行 npm install --legacy-peer-deps 或者 npm install --force 
 ## Before starting
 If you want to run the project, first go to https://github.com/1350171526/React-echarts- Server cloning Node service to the local area to the local area
 The terminal execution of the NPM Install under the root directory of the two files.
