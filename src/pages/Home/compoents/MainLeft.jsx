@@ -1,5 +1,4 @@
 import * as datav from '@jiaminghi/data-view-react'
-import '../style.scss'
 function Left({baseWeather,isloading}){
   const data = baseWeather.map((item)=>{
     return {name:`${item.lives[0].city}`, value: parseInt(`${item.lives[0].temperature}`)}
