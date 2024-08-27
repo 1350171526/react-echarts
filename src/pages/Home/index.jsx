@@ -63,7 +63,7 @@ function Home(){
         <Title></Title>
         <div style={{display: 'flex',width: '100%'}}>
           <div style={{flex: '0 1 25%'}}><MainLeft baseWeather={baseWeather} isloading={isloading}></MainLeft></div>
-          <div style={{flex: '0 1 50%'}}><Main updateCode={updateCode} updataMainCityCode={updataMainCityCode}></Main></div>
+          <div style={{flex: '0 1 50%'}}><Main baseWeather={baseWeather} updateCode={updateCode} updataMainCityCode={updataMainCityCode}></Main></div>
           <div style={{flex: '0 1 25%'}}><MainRight baseWeather={baseWeather} mainCityCode={mainCityCode} isloading={isloading} cityNamed={cityNamed}></MainRight></div>
         </div>
         <Bottom baseWeather={baseWeather} mainCityCode={mainCityCode} isloading={isloading} cityNamed={cityNamed}></Bottom>
